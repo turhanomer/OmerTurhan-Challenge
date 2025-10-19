@@ -3,15 +3,14 @@ import { Transaction } from "@mysten/sui/transactions";
 export const changePrice = (packageId: string, listHeroId: string, newPriceInSui: string, adminCapId: string) => {
   const tx = new Transaction();
   
-  // SUI'yi MIST'e çevir (1 SUI = 1,000,000,000 MIST)
-  const newPriceInMist = BigInt(parseFloat(newPriceInSui) * 1_000_000_000);
+  const newPriceInMist = Math.floor(parseFloat(newPriceInSui) * 1_000_000_000);
   
   tx.moveCall({
     target: `${packageId}::marketplace::change_the_price`,
     arguments: [
       tx.object(adminCapId),
       tx.object(listHeroId),
-      tx.pure.u64(newPriceInMist),
+      tx.pure.u64(newPriceInMist),  
     ],
   });
 
